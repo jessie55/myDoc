@@ -1,35 +1,13 @@
-# 你可能不知道的前端知识点
+# 前端路由的两种实现
 
-发掘被我们忽略的前端知识点。所有的讨论以 [issues](https://github.com/justjavac/the-front-end-knowledge-you-may-dont-know/issues) 的形式进行，任何人都可以在 issues 区围观讨论。
+## History API
 
-本 repo 的目的在于搜集、讨论，最终的内容会整理成文章、PPT、PDF 发布在 [小密圈](http://t.xiaomiquan.com/EAQvV7Y)。
+两个新增的API history.pushState 和 history.replaceState
+这两个 API 都接收三个参数，分别是
 
-- 须知 [#1](https://github.com/justjavac/the-front-end-knowledge-you-may-dont-know/issues/1)
-- 索引 [#2](https://github.com/justjavac/the-front-end-knowledge-you-may-dont-know/issues/2)
-
-## 缘起
-
-前一阵有人在微信群里面遇到了一个问题：
-
-> 当输入框在最底部的时候，弹起的虚拟键盘会把输入框挡住。
-
-于是我发给他一个 API：`Element.scrollIntoViewIfNeeded(opt_center)`，故名思意，就是在需要的时候将元素滚动到可视区域。
-
-对于前端 API 来说，我们最关心的是它的浏览器兼容性：
-
-![scrollIntoViewIfNeeded](./element-scrollIntoViewIfNeeded-can-i-use.png)
-
-随后他又问我：
-
-> 怎么样才能学到这些新的前端技术和API？
-
-首先要知道，这并不是一个新的 API，我们看看它的支持情况:
-
-- 2010-12-06 发布的 Android 2.3（6年前）
-- 2011-06-20 发布的 Safari 5.1
-- 2011-09-16 发布的 Chrome 15
-- 2012-03-07 发布的 iOS 5.1
-- ...
+- 状态对象（state object）与用pushState()方法创建的新历史记录条目关联。无论何时用户导航到新创建的状态，popstate事件都会被触发，并且事件对象的state属性都包含历史记录条目的状态对象的拷贝。
+- 标题（title）FireFox浏览器目前会忽略该参数。考虑到未来可能会对该方法进行修改，传一个空字符串会比较安全。或者，你也可以传入一个简短的标题，标明将要进入的状态。
+- 地址（URL）新的历史记录条目的地址。浏览器不会在调用pushState()方法后加载该地址，但之后，可能会试图加载，例如用户重启浏览器。新的URL不一定是绝对路径；如果是相对路径，它将以当前URL为基准；传入的URL与当前URL应该是同源的，否则，pushState()会抛出异常。该参数是可选的；不指定的话则为文档当前URL。
 
 这已经是一个有着 6 年历史的 API 了。如果在 GitHub 搜索一下，可以搜索到 38,305 个搜索结果。
 
