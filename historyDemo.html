@@ -12,9 +12,6 @@
 		setupPage(currentPage + d);
 		history.pushState(currentPage, document.title, '?x=' + currentPage);
 	}
-	var onpopstate = function(event) {
-		setupPage(event.state);
- 	}
  	function setupPage(page) {
 		currentPage = page;
 		document.title = 'Line Game - ' + currentPage;

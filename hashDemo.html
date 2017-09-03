@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>hash demo</title>
+	<style>
+		.button{
+			display: inline-block;
+			width: 120px;
+			height: 40px;
+			line-height: 40px;
+			text-align: center;
+			text-decoration: none;
+			border: 1px solid #222;
+			color: #222;
+			margin-right: 20px;
+		}
+		.button-white{
+			background-color: white;
+		}
+		.button-orange{
+			background-color: orange;
+		}
+		.button-purple{
+			background-color: purple;
+		}
+
+	</style>
+</head>
+<body>
+	<a href="#/" class="button button-white">turn white</a>
+	<a href="#/orange" class="button button-orange">turn orange</a>
+	<a href="#/purple" class="button button-purple">turn purple</a>	
+</body>
+<script>
+	function Router() {
+	    this.routes = {};
+	    this.currentUrl = '';
+	}
+	Router.prototype.route = function(path, callback) {
+	    this.routes[path] = callback || function(){};
+	};
+	Router.prototype.refresh = function() {
+	    this.currentUrl = location.hash.slice(1) || '/';
+	    this.routes[this.currentUrl]();
+	};
+
+	// EventListener
+	Router.prototype.init = function() {
+	    window.addEventListener('load', this.refresh.bind(this), false);
+	    window.addEventListener('hashchange', this.refresh.bind(this), false);
+	}
+	window.Router = new Router();
+	window.Router.init();
+	var content = document.querySelector('body');
+
+	// change Page anything
+	function changeBgColor(color) {
+	    content.style.backgroundColor = color;
+	}
+	Router.route('/', function() {
+	    changeBgColor('white');
+	});
+	Router.route('/orange', function() {
+	    changeBgColor('orange');
+	});
+	Router.route('/purple', function() {
+	    changeBgColor('purple');
+	});
+</script>
+</html>
