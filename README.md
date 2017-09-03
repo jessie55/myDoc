@@ -8,12 +8,22 @@
 - 标题（title）FireFox浏览器目前会忽略该参数。考虑到未来可能会对该方法进行修改，传一个空字符串会比较安全。或者，你也可以传入一个简短的标题，标明将要进入的状态。
 - 地址（URL）新的历史记录条目的地址。浏览器不会在调用pushState()方法后加载该地址，但之后，可能会试图加载，例如用户重启浏览器。新的URL不一定是绝对路径；如果是相对路径，它将以当前URL为基准；传入的URL与当前URL应该是同源的，否则，pushState()会抛出异常。该参数是可选的；不指定的话则为文档当前URL。
 
-相同之处是两个 API 都会操作浏览器的历史记录，而不会引起页面的刷新。
+**相同之处**是两个 API 都会操作浏览器的历史记录，而不会引起页面的刷新。
 
-不同之处在于，pushState会增加一条新的历史记录，而replaceState则会替换当前的历史记录。
+**不同之处**在于，pushState会增加一条新的历史记录，而replaceState则会替换当前的历史记录。
 
 我们在控制台输入
 > window.history.pushState(null, null, "https://www.baidu.com/?name=orange");
+
+
+每次改变 url 页面并没有刷新，同样根据上文所述，浏览器会产生历史记录。
+
+注意:这里的 url 不支持跨域，当我们把 www.baidu.com 换成 baidu.com 时就会报错。
+
+<a rel="demo" href="demo.html">demo</a>
+
+
+
 
 
 
