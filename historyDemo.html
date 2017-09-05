@@ -1,10 +1,10 @@
 <!DOCTYPE HTML>
-<title>Line Game - 5</title>
+<title>Page - 5</title>
 <p>
-	You are at coordinate <span id="coord">5</span> on the line.
+	current： <span id="curNum">5</span>
 </p>
 <p>
-	<a href="?x=6" onclick="go(1); return false;">Advance to 6</a> or <a href="?x=4" onclick="go(-1); return false;">retreat to 4</a>?
+	<a href="?x=6" onclick="go(1); return false;">go to 6</a> or <a href="?x=4" onclick="go(-1); return false;">back to 4</a>?
 </p>
 <script>
 	var currentPage = 5; 
@@ -14,8 +14,8 @@
 	}
  	function setupPage(page) {
 		currentPage = page;
-		document.title = 'Line Game - ' + currentPage;
-		document.getElementById('coord').textContent = currentPage;
+		document.title = 'Page - ' + currentPage;
+		document.getElementById('curNum').textContent = currentPage;
 		document.links[0].href = '?x=' + (currentPage+1);
 		document.links[0].textContent = 'Advance to ' + (currentPage+1);
 		document.links[1].href = '?x=' + (currentPage-1);

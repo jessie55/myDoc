@@ -1,30 +1,37 @@
 # 前端路由的两种实现
 
 ## History API
+文档：<a rel="https://developer.mozilla.org/en-US/docs/Web/API/History" href="historyDemo.html">https://developer.mozilla.org...</a>
+
+### pushState/replaceState
 
 两个新增的API： history.pushState 和 history.replaceState，这两个 API 都接收三个参数，分别是
 
-- 状态对象（state object）与用pushState()方法创建的新历史记录条目关联。无论何时用户导航到新创建的状态，popstate事件都会被触发，并且事件对象的state属性都包含历史记录条目的状态对象的拷贝。
-- 标题（title）FireFox浏览器目前会忽略该参数。考虑到未来可能会对该方法进行修改，传一个空字符串会比较安全。或者，你也可以传入一个简短的标题，标明将要进入的状态。
-- 地址（URL）新的历史记录条目的地址。浏览器不会在调用pushState()方法后加载该地址，但之后，可能会试图加载，例如用户重启浏览器。新的URL不一定是绝对路径；如果是相对路径，它将以当前URL为基准；传入的URL与当前URL应该是同源的，否则，pushState()会抛出异常。该参数是可选的；不指定的话则为文档当前URL。
+- 状态对象（state object）它可以理解为一个拿来存储自定义数据的元素。它和同时作为参数的url会关联在一起。。
+- 标题（title）是一个字符串，目前各类浏览器都会忽略它（以后才有可能启用，用作页面标题），目前建议设置为空字符串。
+- 地址（URL）一般会是简单的?page=2这样的参数风格的相对路径，它会自动以当前URL为基准。需要注意的是，本参数URL需要和当前页面URL同源，否则会抛出错误。
+
 
 **相同之处**是两个 API 都会操作浏览器的历史记录，而不会引起页面的刷新。
-
 **不同之处**在于，pushState会增加一条新的历史记录，而replaceState则会替换当前的历史记录。
 
 我们在控制台输入
 > window.history.pushState(null, null, "https://www.baidu.com/?name=orange");
 
 
-每次改变 url 页面并没有刷新，同样根据上文所述，浏览器会产生历史记录。
-注意:这里的 url 不支持跨域，当我们把 www.baidu.com 换成 baidu.com 时就会报错。
-
-这就是实现页面无刷新情况下改变 url 的前提，下面我们说下第一个参数**状态对象**。
-
-如果运行 history.pushState() 方法，历史栈对应的纪录就会存入 状态对象，我们可以随时主动调用历史条目。
+调用pushState()方法将新生成一条历史记录，方便用浏览器的“后退”和“前进”来导航（“后退”可是相当常用的按钮）。另外，从URL的同源策略可以看出，HTML5 history API的出发点是很明确的，就是让无跳转的单站点也可以将它的各个状态保存为浏览器的多条历史记录。当通过历史记录重新加载站点时，站点可以直接加载到对应的状态。
 
 <a rel="demo" href="historyDemo.html">demo</a>
-点击 Advance to 对应的 url 与模版都会 +1，反之点击 retreat to 就会都 -1，这就满足了 url 与模版视图同时变化的需求。
+
+点击 go to 对应的 url 与模版都会 +1，反之点击 back to 就会都 -1，这就满足了 url 与模版视图同时变化的需求。
+每次改变 url 页面并没有刷新，浏览器会产生历史记录。
+
+### window.onpopstate
+这个事件是在浏览器取出历史记录并加载时触发的。条件比较苛刻，只有点击浏览器的“前进”、“后退”这些导航按钮，或者是由JavaScript调用的history.back()等导航方法，且切换前后的两条历史记录都属于同一个网页文档，才会触发本事件。
+
+“同一个网页文档”请理解为JavaScript环境的document是同一个，而不是指基础URL（去掉各类参数的）相同。也就是说，只要有重新加载发生（无论是跳转到一个新站点还是继续在本站点），JavaScript全局环境发生了变化，popstate事件都不会触发。
+
+前面2个方法所设置的状态对象，也会在这个时候通过事件的event.state返还回来。
 
 
 ## hash
