@@ -1,24 +1,34 @@
 <!DOCTYPE HTML>
-<title>Page - 5</title>
+<title>Page - 0</title>
 <p>
-	current： <span id="curNum">5</span>
+	current： <span id="curNum">0</span>
 </p>
 <p>
-	<a href="?x=6" onclick="go(1); return false;">go to 6</a> or <a href="?x=4" onclick="go(-1); return false;">back to 4</a>?
+	<a href="?page=-1" onclick="go(-1); return false;">back to -1</a>  or  <a href="?page=1" onclick="go(1); return false;">go to 1</a>
 </p>
 <script>
-	var currentPage = 5; 
+	var reg = /page=(\d+)/,
+ 		regMatch = reg.exec(location.search),
+ 		currentPage = regMatch === null ? 1 : +regMatch[1];
+ 	setupPage(currentPage);
+
+	window.onpopstate = function(e){
+ 		var state = e.state;
+ 		console.log(state);
+ 		setupPage(state);
+ 	}
+
 	function go(d) {
 		setupPage(currentPage + d);
-		history.pushState(currentPage, document.title, '?x=' + currentPage);
+		history.pushState(currentPage, document.title, '?page=' + currentPage);
 	}
  	function setupPage(page) {
 		currentPage = page;
 		document.title = 'Page - ' + currentPage;
 		document.getElementById('curNum').textContent = currentPage;
-		document.links[0].href = '?x=' + (currentPage+1);
-		document.links[0].textContent = 'Advance to ' + (currentPage+1);
-		document.links[1].href = '?x=' + (currentPage-1);
-		document.links[1].textContent = 'retreat to ' + (currentPage-1);
+		document.links[0].href = '?page=' + (currentPage-1);
+		document.links[0].textContent = 'back to ' + (currentPage-1);
+		document.links[1].href = '?page=' + (currentPage+1);
+		document.links[1].textContent = 'go to ' + (currentPage+1);
  	}
 </script>
