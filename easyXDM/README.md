@@ -48,19 +48,19 @@ easyXDM 同样会调用 postMessage 将方法响应发回给子页面，子页�
 ## 代码解析
 
 ### 主页面
-主页面调用 easyXDM.Rpc() 的时候会初始化通信组件，同时会创建 iframe 子页面；具体参数含义介绍如下：
+主页面调用 **easyXDM.Rpc()** 的时候会初始化通信组件，同时会创建 iframe 子页面；具体参数含义介绍如下：
 
-* **isHost: true，表示创建 iframe 子页面
-* **remote: 创建的 iframe 子页面的 url
-* **container: 值为 DOM 对象，创建出来的 iframe 会被包含在 container 中
-* **props: 属性中指定的内容会被附加到 iframe 对象上
-* **hash: 为 true 代表通道相关的 xdm_e / xdm_c / xdm_p 参数会在网址 hash 中记录，为 false 时会变成 url 参数；一般情况下建议设为 true，因为把跨域相关的前端参数传递给后端并不是个很好的方式，但可以解决后面的表单提交后的通道保持问题；所以具体场景具体选择。
+* **isHost**: true，表示创建 iframe 子页面
+* **remote**: 创建的 iframe 子页面的 url
+* **container**: 值为 DOM 对象，创建出来的 iframe 会被包含在 container 中
+* **props**: 属性中指定的内容会被附加到 iframe 对象上
+* **hash**: 为 true 代表通道相关的 xdm_e / xdm_c / xdm_p 参数会在网址 hash 中记录，为 false 时会变成 url 参数；一般情况下建议设为 true，因为把跨域相关的前端参数传递给后端并不是个很好的方式，但可以解决后面的表单提交后的通道保持问题；所以具体场景具体选择。
 
 通过合理设置以上属性，就可以将原来写死在页面上的 iframe 改为通过 easyXDM.Rpc() 的方式进行加载，从而实现代码的灵活嵌入。
 
 实例中父页面 Rpc 初始化后的网页元素如下：
 
-<code>
+<pre><code>
 <div id="container">
     <iframe 
         name="easyXDM_default5341_provider"
@@ -71,7 +71,7 @@ easyXDM 同样会调用 postMessage 将方法响应发回给子页面，子页�
         style="width: 100%; height: 100px;">
     </iframe>
 </div>
-</code>
+</pre></code>
 
 其中 iframe 的 name 和 id 是自动生成的，作用是区分不同的 Rpc 通道，也就意味着在一个页面上可以建立多个跨域调用的通道。中间的 xdm_e / xdm_c / xdm_p 参数是初始化后的通道参数。
 
