@@ -3,8 +3,15 @@
 
 ## easyXDM
 
-easyXDM是一个较为成熟的js跨域解决方案，并且其对各种浏览器都有不同的解决方案，兼容性较好，在ie6,7中使用的是flash，其他浏览器使用的是：PostMessageTransport。
-easyXDM的使用了3个页面：当前查看页面，中间页面，iframe嵌套页面。
+easyXDM 是一个较为成熟的js跨域解决方案，集成了现有的多种跨域解决方案，兼容性较好，在ie6,7中使用的是flash，其他浏览器使用的是：PostMessageTransport。
+
+easyXDM 使用了3个页面：当前查看页面，中间页面，iframe嵌套页面。
+
+
+
+
+
+
 
 **hashchange 事件**监听哈希变化触发的事件。
 <a rel="demo" href="hashDemo.html">demo</a>
@@ -35,4 +42,16 @@ hashchange 在低版本 IE 需要通过轮询监听 url 变化来实现，我们
   }, 100);
 })(window);
 </code></pre>
+
+
+
+## easyXDM 原理
+easyXDM 对不同的底层通信机制进行封装，比如上面实例中使用了 **postMessage** 机制来实现跨域双向通信。
+
+easyXDM 将方法调用操作进行打包后通过 postMessage 发送给主页面，主页面的 message 处理函数收到数据后交由 easyXDM 进行解析后调起调用函数。代码调用和数据流如下图所示：
+
+!['子页面通信'](/pic/pic1.jpg)
+
+
+
 
