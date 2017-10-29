@@ -103,23 +103,23 @@ iframe 中的 Rpc 参数的解析如下：
 0: 默认，所有浏览器都支持；以上规则都不符合时，使用 image 加载机制做通信
 
 
-### 回调
+### 子页面回调
 
 index.html 页面的 echo 函数增加 return 语句返回值：
 
 <pre><code>
   <script>
     new easyXDM.Rpc({
-        // ...
+      // ...
     },
     {
-        local: {
-            echo: function (message) {
-                document.getElementById('output').innerHTML += "<p>" + message + "</p>";
-                return {'msg': 'echo done from index'};
-            }
-        },
-        remote: {}
+      local: {
+          echo: function (msg) {
+              document.getElementById('output').innerHTML += "<p>"+ msg + "</p>";
+              return {'msg': 'echo done from index'};
+          }
+      },
+      remote: {}
     });
 </script>
 </code></pre>
@@ -140,12 +140,54 @@ iframe.html 调用 rpc 方法时增加回调函数即可：
 </code></pre>
 
 
+### 主页面回调
+
+在 iframe.html 中 rpc 的 local 中注册访问自己页面内容的方法 pingIframe：
+
+<pre><code>
+  window.rpc = new easyXDM.Rpc({
+    // ...
+  },
+  {
+      local: {
+          pingIframe: function (message) {
+              showMsg(message);
+              return {'msg': 'pong from iframe'}
+          }
+      },
+      remote: {
+          echo: {}
+      }
+  });
+</code></pre>
 
 
+在 index.html 中 rpc 的 remote 中注册子页面的 pingIframe 方法声明，增加一下按钮调用事件：
 
+<pre><code>
+  <button id="btn" value="">点击给子页面发数据</button>
+  <script>
+    // ...
+    var rpc = new easyXDM.Rpc({
+        // ...
+    },
+    {
+        local: {
+            // ...
+        },
+        remote: {
+            pingIframe: {}
+        }
+    });
 
-
-
-
+    document.getElementById('btn').onclick = function () {
+        rpc.pingIframe('ping from index', function(response){
+            showMsg(response.msg);
+        }, function(errorObj){
+            alert('error');
+        });
+    };
+  </script>
+</code></pre>
 
 
