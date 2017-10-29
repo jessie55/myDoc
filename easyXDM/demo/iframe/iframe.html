@@ -15,16 +15,24 @@
     };
     window.rpc = new easyXDM.Rpc({
         isHost: false,
-        //acl: '^(https?:\\/\\/)?([a-zA-Z0-9\\-]+\\.)*baixing.com(\\/.*)?$',
         protocol: '1'
-    },
-    {
+    },{
+        local: {
+            pingIframe: function (message) {
+                showMsg(message);
+                return {'msg': 'pong from iframe'}
+            }
+        },
         remote: {
             echo: {}
         }
     });
     document.getElementById('btn').onclick = function () {
-        rpc.echo('echo from iframe');
+        rpc.echo('echo from iframe', function (response) {
+            showMsg(response.msg);
+        }, function (errorObj) {
+            alert('error');
+        });
     };
 </script>
 </body>

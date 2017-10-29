@@ -5,17 +5,19 @@
 	<title>demo</title>
 	<style>
 		#container{
+            margin-bottom: 20px;
 			border: 2px dashed #666;
 		}
 		#output{
 			padding: 10px 20px;
-			margin-top: 20px;
+            margin-top: 20px;
 			background-color: #8fbaf7;
 		}
 	</style>
 </head>
 <body>
 <div id="container"></div>
+<button id="btn" value="">点击给子页面发数据</button>
 <div id="output">
     <p>蓝色区域为主页面内容输出区</p>
 </div>
@@ -33,16 +35,28 @@
         props: {
             frameBorder: 0,
             scrolling: 'no',
-            style: {width: '100%', height: '100px'}
+            style: {width: '100%', height: '200px'}
         }
     },
     {
         local: {
             echo: function (message) {
                 showMsg(message);
+                return {'msg': 'echo done from index'};
             }
+        },
+        remote: {
+            pingIframe: {}
         }
     });
+
+    document.getElementById('btn').onclick = function () {
+        rpc.pingIframe('ping from index', function(response){
+            showMsg(response.msg);
+        }, function(errorObj){
+            alert('error');
+        });
+    };
 </script>
 	
 </body>

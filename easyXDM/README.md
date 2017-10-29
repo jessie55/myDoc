@@ -48,6 +48,7 @@ easyXDM 同样会调用 postMessage 将方法响应发回给子页面，子页�
 ## 代码解析
 
 ### 主页面
+
 主页面调用 **easyXDM.Rpc()** 的时候会初始化通信组件，同时会创建 iframe 子页面；具体参数含义介绍如下：
 
 * **isHost**: true，表示创建 iframe 子页面
@@ -61,25 +62,82 @@ easyXDM 同样会调用 postMessage 将方法响应发回给子页面，子页�
 实例中父页面 Rpc 初始化后的网页元素如下：
 
 <pre><code>
-    <div id="container">
-      <iframe 
-        name="easyXDM_default5341_provider"
-        id="easyXDM_default5341_provider"
-        frameborder="0"
-        scrolling="no"
-        src="http://localhost:3001/iframe.html#xdm_e=http%3A%2F%2Flocalhost%3A3000&amp;xdm_c=default5341&amp;xdm_p=1" 
-        style="width: 100%; height: 100px;">
-      </iframe>
-    </div>
-</pre></code>
+  <div id="container">
+    <iframe 
+      name="easyXDM_default5341_provider"
+      id="easyXDM_default5341_provider"
+      frameborder="0"
+      scrolling="no"
+      src="http://localhost:3001/iframe.html#xdm_e=http%3A%2F%2Flocalhost%3A3000&amp;xdm_c=default5341&amp;xdm_p=1" 
+      style="width: 100%; height: 100px;">
+    </iframe>
+  </div>
+</code></pre>
 
 其中 iframe 的 name 和 id 是自动生成的，作用是区分不同的 Rpc 通道，也就意味着在一个页面上可以建立多个跨域调用的通道。中间的 xdm_e / xdm_c / xdm_p 参数是初始化后的通道参数。
 
 另外 local 参数配置定义了子页面可以调用的函数方法名和方法实现，方法名、方法参数等都可以任意按需指定。
 
 
+### 子页面
+
+iframe 中的 Rpc 参数的解析如下：
+
+* **isHost**: false，代表这是客户端，不创建 iframe 页面
+* **protocol**: 通信协议，数字，具体含义见以下通信协议说明部分，可选
+* **acl**: 代码调用方的网址白名单，可选
+与主页面的 local 参数相对应，子页面的 remote 配置定义了所有子页面需要调用到的主页面的方法名。只有在 remote 里定义了，在子页面上才能通过 rpc 实例调用到。
+
+以上正确配置后，函数跨域调用就和本地调用效果一样了，具体中间的通信已经由 easyXDM 来搞定，如同文中的 rpc.echo() 已经可以直接调用到主页面定义的 echo 方法。
 
 
+### 通信协议
+
+关于通信协议，如在代码配置中未指定则会按以下规则依次匹配使用最前面符合的一个
+
+4: 当通信的两端属于同一域时，直接通信
+1: 当存在 windows.postMessage 或 document.postMessage 时（IE8+、Firefox 3+、Opera 9+、Chrome 2+、Safari 4+ 支持），使用 postMessage 机制通信
+6: 配置中存在 swf 属性，并且支持 window.ActiveXObject 时，通过配置的 swf 做通信
+5: Gecko（ Firefox 1+ ）浏览器时，使用 window.frameElement 属性做通信
+2: 配置中存在 remoteHelper 时，通过配置的 remoteHelper 做通信
+0: 默认，所有浏览器都支持；以上规则都不符合时，使用 image 加载机制做通信
+
+
+### 回调
+
+index.html 页面的 echo 函数增加 return 语句返回值：
+
+<pre><code>
+  <script>
+    new easyXDM.Rpc({
+        // ...
+    },
+    {
+        local: {
+            echo: function (message) {
+                document.getElementById('output').innerHTML += "<p>" + message + "</p>";
+                return {'msg': 'echo done from index'};
+            }
+        },
+        remote: {}
+    });
+</script>
+</code></pre>
+
+
+iframe.html 调用 rpc 方法时增加回调函数即可：
+<pre><code>
+  <script>
+    // ...
+    document.getElementById('btn').onclick = function () {
+        rpc.echo('echo from iframe', function (response) {
+            showMsg(response.msg);
+        }, function (errorObj) {
+            alert('error');
+        });
+    };
+  </script>
+</code></pre>
 
 
 
