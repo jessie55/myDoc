@@ -62,6 +62,7 @@ easyXDM 同样会调用 postMessage 将方法响应发回给子页面，子页�
 实例中父页面 Rpc 初始化后的网页元素如下：
 
 <pre><code>
+
   <div id="container">
     <iframe 
       name="easyXDM_default5341_provider"
@@ -72,6 +73,7 @@ easyXDM 同样会调用 postMessage 将方法响应发回给子页面，子页�
       style="width: 100%; height: 100px;">
     </iframe>
   </div>
+  
 </code></pre>
 
 其中 iframe 的 name 和 id 是自动生成的，作用是区分不同的 Rpc 通道，也就意味着在一个页面上可以建立多个跨域调用的通道。中间的 xdm_e / xdm_c / xdm_p 参数是初始化后的通道参数。
@@ -165,7 +167,6 @@ iframe.html 调用 rpc 方法时增加回调函数即可：
 在 index.html 中 rpc 的 remote 中注册子页面的 pingIframe 方法声明，增加一下按钮调用事件：
 
 <pre><code>
-  <button id="btn" value="">点击给子页面发数据</button>
   <script>
     // ...
     var rpc = new easyXDM.Rpc({
