@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>demo</title>
+	<style>
+		#container{
+			border: 2px dashed #666;
+		}
+		#output{
+			padding: 10px 20px;
+			margin-top: 20px;
+			background-color: #8fbaf7;
+		}
+	</style>
+</head>
+<body>
+<div id="container"></div>
+<div id="output">
+    <p>蓝色区域为主页面内容输出区</p>
+</div>
+<script src="easyXDM.js"></script>
+<script>
+    var showMsg = function (message) {
+        document.getElementById('output').innerHTML += "<p>" + message + "</p>";
+    };
+    var rpc = new easyXDM.Rpc({
+        isHost: true,
+        remote: 'http://localhost:3001/iframe.html',
+        hash: true,
+        protocol: '1',
+        container: document.getElementById('container'),
+        props: {
+            frameBorder: 0,
+            scrolling: 'no',
+            style: {width: '100%', height: '100px'}
+        }
+    },
+    {
+        local: {
+            echo: function (message) {
+                showMsg(message);
+            }
+        }
+    });
+</script>
+	
+</body>
+</html>

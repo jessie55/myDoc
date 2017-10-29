@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>demo</title>
+</head>
+<body>
+<p>虚线框为子页面区域</p>
+<button id="btn" value="">点击给主页面发数据</button>
+<div id="output"></div>
+<script src="easyXDM.js"></script>
+<script>
+    var showMsg = function (message) {
+        document.getElementById('output').innerHTML += "<p>" + message + "</p>";
+    };
+    window.rpc = new easyXDM.Rpc({
+        isHost: false,
+        //acl: '^(https?:\\/\\/)?([a-zA-Z0-9\\-]+\\.)*baixing.com(\\/.*)?$',
+        protocol: '1'
+    },
+    {
+        remote: {
+            echo: {}
+        }
+    });
+    document.getElementById('btn').onclick = function () {
+        rpc.echo('echo from iframe');
+    };
+</script>
+</body>
+</html>
