@@ -61,7 +61,7 @@ easyXDM 同样会调用 postMessage 将方法响应发回给子页面，子页�
 实例中父页面 Rpc 初始化后的网页元素如下：
 
 <pre><code>
-<div id="container">
+  <div id="container">
     <iframe 
         name="easyXDM_default5341_provider"
         id="easyXDM_default5341_provider"
@@ -70,7 +70,7 @@ easyXDM 同样会调用 postMessage 将方法响应发回给子页面，子页�
         src="http://localhost:3001/iframe.html#xdm_e=http%3A%2F%2Flocalhost%3A3000&amp;xdm_c=default5341&amp;xdm_p=1" 
         style="width: 100%; height: 100px;">
     </iframe>
-</div>
+  </div>
 </pre></code>
 
 其中 iframe 的 name 和 id 是自动生成的，作用是区分不同的 Rpc 通道，也就意味着在一个页面上可以建立多个跨域调用的通道。中间的 xdm_e / xdm_c / xdm_p 参数是初始化后的通道参数。
