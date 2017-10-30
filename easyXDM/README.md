@@ -58,15 +58,14 @@ easyXDM 同样会调用 postMessage 将方法响应发回给子页面，子页�
 实例中父页面 Rpc 初始化后的网页元素如下：
 
 <pre><code>
-  <div class="container">
+  <div id="container">
     <iframe 
       name="easyXDM_default5341_provider"
       id="easyXDM_default5341_provider"
       frameborder="0"
       scrolling="no"
       src="http://localhost:3001/iframe.html#xdm_e=http%3A%2F%2Flocalhost%3A3000&amp;xdm_c=default5341&amp;xdm_p=1" 
-      style="width: 100%; height: 100px;">
-    </iframe>
+      style="width: 100%; height: 100px;"></iframe>
   </div>
 </code></pre>
 
